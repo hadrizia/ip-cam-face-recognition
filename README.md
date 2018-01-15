@@ -15,4 +15,4 @@
 
    	* Limitações
    		* Baixo alcance de detecção: Para que a detecção ocorra, o indivíduo deve estar a uma curta distância da câmera;
-   		* Reconhecimento pode ser comprometido: Apesar de reconhecer uma pessoa ao usar capuz, óculos e/ou cabelo preso, ocultar a boca pode comprometer o reconhecimento.
+         * Reconhecimento pode ser comprometido: Apesar de reconhecer uma pessoa ao usar capuz, óculos e/ou cabelo preso, ocultar a boca pode comprometer o reconhecimento.
