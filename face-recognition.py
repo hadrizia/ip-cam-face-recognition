@@ -1,6 +1,7 @@
 import face_recognition
 import cv2
 import glob, os
+import time
 
 # This is a demo of running face recognition on live video from your webcam. It's a little more complicated than the
 # other example, but it includes some basic performance tweaks to make things run a lot faster:
@@ -22,16 +23,37 @@ face_names = []
 suspects_name = []
 process_this_frame = True
 faces = []
+faces_file = "data/faces_file"
+faces_names_file = "data/faces_names_file"
 
 # Function that load an image and recognize it
 def load_and_recognize(image_path, name_suspect):
+    print 'Loading image: ' + image_path
     image = face_recognition.load_image_file(image_path)
-    faces.append(face_recognition.face_encodings(image)[0])
-    suspects_name.append(name_suspect)
+    print 'Recognizing image...'
+    if len(face_recognition.face_encodings(image)) > 0:
+        faces.append(face_recognition.face_encodings(image)[0])
+        suspects_name.append(name_suspect)
+        print len(faces[0])
 
-for filename in glob.glob('data/*.jpg'):
-    suspect_name = os.path.basename(filename).replace('_', ' ').replace('.jpg', '')
-    load_and_recognize(filename, suspect_name)
+def write_file(file_path, list):
+    file = open(file_path, "w")
+    for element in list:
+        file.write(element)
+    file.close
+
+def read_file(file_path):
+    file = open(file_path, "r")
+    print file
+    file.close()
+
+def save_faces():
+    for filename in glob.glob('data/**/*.jpg'):
+        suspect_name = os.path.dirname(filename).split('/')[1]
+        suspect_name = suspect_name.replace('_', ' ')
+        load_and_recognize(filename, suspect_name)
+
+save_faces()
 
 while True:
     # Grab a single frame of video
@@ -57,7 +79,6 @@ while True:
 
             for i in range(len(match)):
                 if match[i]:
-                    print
                     name = suspects_name[i]
 
             face_names.append(name)
