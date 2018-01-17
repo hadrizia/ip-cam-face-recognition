@@ -13,7 +13,7 @@ import time
 # specific demo. If you have trouble installing it, try any of the other demos that don't require it instead.
 
 # Get a reference to webcam #0 (the default one)
-url = 'https://192.168.130.31:8080/videofeed'
+url = 'https://192.168.130.22:8080/videofeed'
 video_capture = cv2.VideoCapture(url)
 
 # Initialize some variables
@@ -25,16 +25,20 @@ process_this_frame = True
 faces = []
 faces_file = "data/faces_file"
 faces_names_file = "data/faces_names_file"
+total_photos = sum([len(files) for r, d, files in os.walk("./data")])
+
+def check_camera(video_capture):
+    return video_capture.read()[1] != None
 
 # Function that load an image and recognize it
 def load_and_recognize(image_path, name_suspect):
     print 'Loading image: ' + image_path
     image = face_recognition.load_image_file(image_path)
-    print 'Recognizing image...'
-    if len(face_recognition.face_encodings(image)) > 0:
-        faces.append(face_recognition.face_encodings(image)[0])
+    fc_encodings = face_recognition.face_encodings(image)
+
+    if len(fc_encodings) > 0:
+        faces.append(fc_encodings[0])
         suspects_name.append(name_suspect)
-        print len(faces[0])
 
 def write_file(file_path, list):
     file = open(file_path, "w")
@@ -48,17 +52,13 @@ def read_file(file_path):
     file.close()
 
 def save_faces():
-    for filename in glob.glob('data/**/*.jpg'):
-        suspect_name = os.path.dirname(filename).split('/')[1]
-        suspect_name = suspect_name.replace('_', ' ')
-        load_and_recognize(filename, suspect_name)
+    if check_camera(video_capture):
+        for filename in glob.glob('data/**/*.jpg'):
+            suspect_name = os.path.dirname(filename).split('/')[1]
+            suspect_name = suspect_name.replace('_', ' ')
+            load_and_recognize(filename, suspect_name)
 
-save_faces()
-
-while True:
-    # Grab a single frame of video
-    ret, frame = video_capture.read()
-
+def recognize_image(frame):
     # Resize frame of video to 1/4 size for faster face recognition processing
     small_frame = cv2.resize(frame, (0, 0), fx = 0.25, fy = 0.25)
 
@@ -103,6 +103,18 @@ while True:
 
     # Display the resulting image
     cv2.imshow('Video', frame)
+
+save_faces()
+
+while True:
+    # Grab a single frame of video
+    ret, frame = video_capture.read()
+
+    if(check_camera(video_capture)):
+        recognize_image(frame)
+    else:
+        print 'An error occurred in frame. Please check the camera'
+        break
 
     # Hit 'q' on the keyboard to quit!
     if cv2.waitKey(1) & 0xFF == ord('q'):
