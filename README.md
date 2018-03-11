@@ -6,11 +6,9 @@
    
    ```
    sudo apt-get install python-opencv
-   ```
-   ```
+
    sudo pip2 install face-recognition
-   ```
-   ```
+   
    python face-recognition.py
    ``` 
    A seguir serão descritos alguns aspectos observados sobre a biblioteca.
