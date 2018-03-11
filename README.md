@@ -4,13 +4,15 @@
 
    Esta biblioteca foi testada através de um código que carrega e processa rostos de pessoas em formato .jpg e executa o reconhecimento entre os rostos cadastrados e os frames de uma streaming IP cam. Para executá-lo, basta rodar as seguintes linhas de comando:
    
-   ```
+```
    sudo apt-get install python-opencv
-
+```
+```
    sudo pip2 install face-recognition
-   
-   python face-recognition.py
-   ``` 
+```
+```
+python face-recognition.py
+``` 
    A seguir serão descritos alguns aspectos observados sobre a biblioteca.
 
    * Pontos positivos
