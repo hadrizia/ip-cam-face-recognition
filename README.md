@@ -12,8 +12,7 @@
    ```
    ```
    python face-recognition.py
-   ```
-   
+   ``` 
    A seguir serão descritos alguns aspectos observados sobre a biblioteca.
 
    * Pontos positivos
